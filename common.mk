@@ -17,6 +17,13 @@ COMMON_PATH := device/samsung/galaxys2-common
 
 DEVICE_PACKAGE_OVERLAYS := $(COMMON_PATH)/overlay
 
+PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_us_supl.mk)
+
 # Rootdir
 PRODUCT_COPY_FILES := \
     $(COMMON_PATH)/rootdir/fstab.smdk4210:root/fstab.smdk4210 \
@@ -110,8 +117,11 @@ PRODUCT_PACKAGES += \
     libOMX.SEC.MP3.Decoder
 
 PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
     $(COMMON_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -119,13 +129,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.zygote.disable_gl_preload=true \
     ro.bq.gpu_to_cpu_unsupported=1 \
     debug.hwui.render_dirty_regions=false
-
-# RIL
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.ril_class=SamsungExynos4RIL \
-    mobiledata.interfaces=pdp0,wlan0,gprs,ppp0 \
-    ro.telephony.call_ring.multiple=false \
-    ro.telephony.call_ring.delay=3000
+    
+#wifi
+PRODUCT_PACKAGES += \
+  libwpa_client \
+  hostapd \
+  dhcpcd.conf \
+  wpa_supplicant \
+  wpa_supplicant.conf
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -159,7 +170,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.xml:system/etc/permissions/android.hardware.touchscreen.xml \
