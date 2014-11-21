@@ -48,6 +48,10 @@ ifeq ($(strip $(BOARD_USE_YAMAHA_MC1N2_AUDIO)),true)
 	LOCAL_SHARED_LIBRARIES += libyamaha-mc1n2-audio
 endif
 
+ifeq ($(TARGET_DEVICE),n7000) 	
+	LOCAL_CFLAGS += -DYAMAHA_MC1N2_AUDIO_DEVICE=\"galaxys2\" 	
+ endif
+
 LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE_TAGS := optional
 
