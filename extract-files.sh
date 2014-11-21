@@ -141,9 +141,6 @@ EOF
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-USE_CAMERA_STUB := false
-BOARD_USES_GENERIC_AUDIO := false
-
 # Pick up overlay for features that depend on non-open-source files
 DEVICE_PACKAGE_OVERLAYS += vendor/__VENDOR__/__COMMON__/overlay
 
