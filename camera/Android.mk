@@ -15,8 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ifneq ($(filter i9300 i9305 n7000 n7100 t0lte t0lteatt t0ltetmo i605 l900 r950,$(TARGET_DEVICE)),)
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -24,25 +22,15 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
 	exynos_camera.c \
 	exynos_exif.c \
-	exynos_jpeg.c \
 	exynos_param.c \
-	exynos_utils.c \
-	exynos_v4l2.c \
-	exynos_v4l2_output.c
+	exynos_v4l2.c
 
 LOCAL_C_INCLUDES := \
 	system/media/camera/include \
 	hardware/samsung/exynos4/hal/include
 
-LOCAL_SHARED_LIBRARIES := libutils libcutils liblog libcamera_client libhardware 
+LOCAL_SHARED_LIBRARIES := libutils libcutils liblog libcamera_client libhardware libs5pjpeg
 LOCAL_PRELINK_MODULE := false
-
-ifeq ($(TARGET_SOC),exynos4x12)
-	LOCAL_SHARED_LIBRARIES += libhwjpeg
-	LOCAL_CFLAGS += -DEXYNOS_JPEG_HW
-	LOCAL_SRC_FILES += exynos_ion.c
-	LOCAL_CFLAGS += -DEXYNOS_ION
-endif
 
 LOCAL_MODULE := camera.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
